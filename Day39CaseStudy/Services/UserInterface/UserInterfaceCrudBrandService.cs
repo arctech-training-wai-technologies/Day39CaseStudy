@@ -1,5 +1,4 @@
 ﻿using Day39CaseStudy.DataAccess.Models;
-using Day39CaseStudy.Services.DbService;
 using Day39CaseStudy.Services.DbService.Interfaces;
 using Day39CaseStudy.Services.Factory;
 
@@ -69,8 +68,9 @@ public class UserInterfaceCrudBrandService
 
         Console.Write("Enter the Brand Id to delete: ");
         var brandIdText = Console.ReadLine();
-        int brandId = int.Parse(brandIdText);
 
+        var brandId = int.Parse(brandIdText);
+        
         try
         {
             _brandService.Delete(brandId);

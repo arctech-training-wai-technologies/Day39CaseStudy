@@ -103,7 +103,7 @@ public class UserInterfaceCrudProductService
 
         Console.Write("Enter the Product Id to delete: ");
         var productIdText = Console.ReadLine();
-        int productId = int.Parse(productIdText);
+        var productId = int.Parse(productIdText);
 
         _productService.Delete(productId);
     }

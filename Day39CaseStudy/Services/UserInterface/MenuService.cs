@@ -15,7 +15,7 @@ public enum MenuOptions
 
 public class MenuService
 {
-    public MenuOptions Show()
+    public static MenuOptions Show()
     {
         Console.WriteLine("=== Main Menu ===");
         Console.WriteLine("| Brand          |");

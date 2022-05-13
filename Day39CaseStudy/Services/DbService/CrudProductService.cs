@@ -41,11 +41,17 @@ public class CrudProductService : ICrudService<Product>
         return product;
     }
 
-    public void Delete(int brandId)
+    public void Delete(int productId)
     {
         using var context = new SampleStoreDbContext();
 
-        var product = context.Products.Find(brandId);
+        var product = context.Products.Find(productId);
+
+        if (product == null)
+        {
+            Console.WriteLine($"ProductId {productId} not found");
+            return;
+        }
 
         context.Products.Remove(product);
         context.SaveChanges();

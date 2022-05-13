@@ -43,6 +43,12 @@ public class CrudBrandService : ICrudService<Brand>
 
         var brand = context.Brands.Find(brandId);
 
+        if (brand == null)
+        {
+            Console.WriteLine($"BrandId {brandId} not found");
+            return;
+        }
+
         context.Brands.Remove(brand);
         context.SaveChanges();
     }
