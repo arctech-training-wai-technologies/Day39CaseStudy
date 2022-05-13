@@ -1,9 +1,10 @@
 ﻿using Day39CaseStudy.DataAccess;
 using Day39CaseStudy.DataAccess.Models;
+using Day39CaseStudy.Services.DbService.Interfaces;
 
 namespace Day39CaseStudy.Services.DbService;
 
-public class CrudBrandService
+public class CrudBrandService : ICrudService<Brand>
 {
     public void Add(Brand brand)
     {
@@ -36,7 +37,7 @@ public class CrudBrandService
         return brand;
     }
 
-    internal void Delete(int brandId)
+    public void Delete(int brandId)
     {
         using var context = new SampleStoreDbContext();
 

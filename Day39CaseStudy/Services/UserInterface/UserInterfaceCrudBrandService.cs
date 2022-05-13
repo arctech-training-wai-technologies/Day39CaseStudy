@@ -1,15 +1,21 @@
 ﻿using Day39CaseStudy.DataAccess.Models;
 using Day39CaseStudy.Services.DbService;
+using Day39CaseStudy.Services.DbService.Interfaces;
+using Day39CaseStudy.Services.Factory;
 
 namespace Day39CaseStudy.Services.UserInterface;
 
 public class UserInterfaceCrudBrandService
 {
-    readonly CrudBrandService _brandService;
+    //CrudBrandService _brandService;           // TIGHTLY BOUND. VERY BAD
+
+    readonly ICrudService<Brand> _brandService; // LOOSELY BOUND. VERY GOOD
 
     public UserInterfaceCrudBrandService()
     {
-        _brandService = new CrudBrandService();
+        //_brandService = new CrudBrandService();       // TIGHTLY BOUND. VERY BAD
+
+        _brandService = CrudFactory.Create<Brand>();    // LOOSELY BOUND. VERY GOOD
     }
 
     public void Add()
@@ -65,7 +71,16 @@ public class UserInterfaceCrudBrandService
         var brandIdText = Console.ReadLine();
         int brandId = int.Parse(brandIdText);
 
-        _brandService.Delete(brandId);
+        try
+        {
+            _brandService.Delete(brandId);
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Delete Brand Failed!! {ex.Message}");
+            Console.ResetColor();
+        }
     }
 
     public void Show()

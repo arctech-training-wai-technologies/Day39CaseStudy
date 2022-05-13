@@ -16,17 +16,17 @@ public class Product
     [Column("brand_id")]
     public int BrandId { get; set; }
 
-    [ForeignKey("brand_id")]
+    [ForeignKey("BrandId")]
     public Brand Brand { get; set; }
 
     [Column("category_id")]
     public int CategoryId { get; set; }
 
-    [ForeignKey("category_id")]
+    [ForeignKey("CategoryId")]
     public Category Category { get; set; }
 
     [Column("model_year")]
-    public int ModelYear { get; set; }
+    public short ModelYear { get; set; }
 
     [Column("list_price")]
     public decimal ListPrice { get; set; }
@@ -35,6 +35,6 @@ public class Product
 
     public override string ToString()
     {
-        return $"{ProductId}, {ProductName}, {BrandId}, {Brand.BrandName}, {CategoryId}, {Category.CategoryName}, {ModelYear}, {ListPrice}";
+        return $"{ProductId}, {ProductName}, {BrandId}, {Brand?.BrandName}, {CategoryId}, {Category?.CategoryName}, {ModelYear}, {ListPrice}";
     }
 }

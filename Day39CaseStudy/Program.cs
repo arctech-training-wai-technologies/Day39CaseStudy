@@ -12,6 +12,7 @@ Requirement:
 
 var menuService = new MenuService();
 var uiBrandService = new UserInterfaceCrudBrandService();
+var uiProductService = new UserInterfaceCrudProductService();
 
 do
 {
@@ -34,12 +35,16 @@ do
             uiBrandService.Show();
             break;
         case MenuOptions.ProductAdd:
+            uiProductService.Add();
             break;
         case MenuOptions.ProductUpdate:
+            uiProductService.Update();
             break;
         case MenuOptions.ProductDelete:
+            uiProductService.Delete();
             break;
         case MenuOptions.ProductShow:
+            uiProductService.Show();
             break;
         default:
             break;

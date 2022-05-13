@@ -1,9 +1,11 @@
 ﻿using Day39CaseStudy.DataAccess;
 using Day39CaseStudy.DataAccess.Models;
+using Day39CaseStudy.Services.DbService.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Day39CaseStudy.Services.DbService;
 
-public class CrudProductService
+public class CrudProductService : ICrudService<Product>
 {
     public void Add(Product product)
     {
@@ -17,7 +19,10 @@ public class CrudProductService
     {
         using var context = new SampleStoreDbContext();
 
-        return context.Products.ToList();
+        return context.Products
+            .Include("Brand")
+            .Include("Category")
+            .ToList();
     }
 
     public void Update(Product product)
@@ -36,7 +41,7 @@ public class CrudProductService
         return product;
     }
 
-    internal void Delete(int brandId)
+    public void Delete(int brandId)
     {
         using var context = new SampleStoreDbContext();
 

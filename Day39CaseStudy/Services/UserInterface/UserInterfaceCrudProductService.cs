@@ -1,15 +1,16 @@
 ﻿using Day39CaseStudy.DataAccess.Models;
-using Day39CaseStudy.Services.DbService;
+using Day39CaseStudy.Services.DbService.Interfaces;
+using Day39CaseStudy.Services.Factory;
 
 namespace Day39CaseStudy.Services.UserInterface;
 
 public class UserInterfaceCrudProductService
 {
-    readonly CrudProductService _productService;
+    readonly ICrudService<Product> _productService;
 
     public UserInterfaceCrudProductService()
     {
-        _productService = new CrudProductService();
+        _productService = CrudFactory.Create<Product>();
     }
 
     public void Add()
@@ -33,13 +34,20 @@ public class UserInterfaceCrudProductService
 
         Console.Write("Enter Model Year: ");
         var modelYearText = Console.ReadLine();
-        product.ModelYear = int.Parse(modelYearText);
+        product.ModelYear = short.Parse(modelYearText);
 
         Console.Write("Enter List Price: ");
         var listPriceText = Console.ReadLine();
         product.ListPrice = int.Parse(listPriceText);
 
-        _productService.Add(product);
+        try
+        {
+            _productService.Add(product);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error Adding product: {ex.Message}");
+        }
     }
 
     public IEnumerable<Product> GetAll()
@@ -64,11 +72,26 @@ public class UserInterfaceCrudProductService
         }
 
         Console.WriteLine($"Found Product: {product}");
+        Console.WriteLine("-------------------------------------------------------");
 
         Console.Write("Enter Product Name to change: ");
-        var changedProductNameText = Console.ReadLine();
+        product.ProductName = Console.ReadLine();
 
-        product.ProductName = changedProductNameText;
+        Console.Write("Enter Brand Id to change: ");
+        var brandIdText = Console.ReadLine();
+        product.BrandId = int.Parse(brandIdText);
+
+        Console.Write("Enter CategoryId to change: ");
+        var categoryIdText = Console.ReadLine();
+        product.CategoryId = int.Parse(categoryIdText);
+
+        Console.Write("Enter Model Year to change: ");
+        var modelYearText = Console.ReadLine();
+        product.ModelYear = short.Parse(modelYearText);
+
+        Console.Write("Enter List Price to change: ");
+        var listPriceText = Console.ReadLine();
+        product.ListPrice = int.Parse(listPriceText);
         
         _productService.Update(product);
     }
