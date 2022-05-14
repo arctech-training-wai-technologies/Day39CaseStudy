@@ -2,6 +2,7 @@
 
 public enum MenuOptions
 {
+    Unknown = -1,
     Exit = 0,
     BrandAdd = 1,
     BrandUpdate = 2,
@@ -11,29 +12,129 @@ public enum MenuOptions
     ProductUpdate = 6,
     ProductDelete = 7,
     ProductShow = 8,
+    CategoryAdd = 9,
+    CategoryUpdate = 10,
+    CategoryDelete = 11,
+    CategoryShow = 12
 }
 
 public class MenuService
 {
+    private static readonly string[] MainMenuItems =
+    {
+        "1) Brand",
+        "2) Product",
+        "3) Category",
+        "0) Exit"
+    };
+
+    private static readonly string[] SubMenuItems =
+    {
+        "1) Add",
+        "2) Update",
+        "3) Delete",
+        "4) Show",
+        "0) Go Back"
+    };
+
     public static MenuOptions Show()
     {
-        Console.WriteLine("=== Main Menu ===");
-        Console.WriteLine("| Brand          |");
-        Console.WriteLine("| 1) Add         |");
-        Console.WriteLine("| 2) Update      |");
-        Console.WriteLine("| 3) Delete      |");
-        Console.WriteLine("| 4) Show        |");
-        Console.WriteLine("| Product        |");
-        Console.WriteLine("| 5) Add         |");
-        Console.WriteLine("| 6) Update      |");
-        Console.WriteLine("| 7) Delete      |");
-        Console.WriteLine("| 8) Show        |");
-        Console.WriteLine("| 0) Exit        |");
+        MenuOptions menuOption;
+
+        do
+        {
+            var menuId = ShowMenuListing("=== Main Menu ===", MainMenuItems);
+
+            switch (menuId)
+            {
+                case 0:
+                    return MenuOptions.Exit;
+                case -1:
+                    continue;
+            }
+
+            var selectedMainMenuText = GetMenuText(MainMenuItems[menuId - 1]);
+            var subMenuId = ShowMenuListing(selectedMainMenuText, SubMenuItems);
+
+            if (subMenuId == 0 || subMenuId == -1) 
+                continue;
+
+            menuOption = CalculateMenuOption(menuId, subMenuId);
+
+            if (menuOption == MenuOptions.Unknown)
+                continue;
+
+            break;
+        } while (true);
+
+
+        ShowInformationMessage(menuOption.ToString());
+        return menuOption;
+    }
+
+    private static void ShowInformationMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    private static MenuOptions CalculateMenuOption(int menuId, int subMenuId)
+    {
+        var masterMenuId = (menuId - 1) * MainMenuItems.Length + subMenuId;
+
+        var selectedMenuOption = (MenuOptions)masterMenuId;
+
+        var minEnumValue = Enum.GetValues(typeof(MenuOptions)).Cast<int>().Min();
+        var maxEnumValue = Enum.GetValues(typeof(MenuOptions)).Cast<int>().Max();
+
+        if ((int) selectedMenuOption >= minEnumValue && (int) selectedMenuOption <= maxEnumValue)
+            return selectedMenuOption;
+
+        ShowErrorMessage("Invalid Menu Item Selected");
+        return MenuOptions.Unknown;
+    }
+
+    private static void ShowErrorMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    private static int ShowMenuListing(string title, string[] menuItems)
+    {
+        ShowTitle(title);
+
+        foreach (var mainMenuItem in menuItems)
+            Console.WriteLine(GetMenuText(mainMenuItem));
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.Write("Select an option: ");
         var selectedMenu = Console.ReadKey();
+        Console.ResetColor();
+
         Console.WriteLine();
-        
-        var selectedMenuOption = (MenuOptions)(selectedMenu.KeyChar - '0');
-        return selectedMenuOption;
+        var menuId = selectedMenu.KeyChar - '0';
+
+        if (menuId >= 0 && menuId < menuItems.Length) return menuId;
+
+        ShowErrorMessage("Invalid Menu Item Selected");
+        return -1;
+    }
+
+    private static void ShowTitle(string title)
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        var line = new string('-', title.Length);
+        Console.WriteLine(line);
+        Console.WriteLine(title);
+        Console.WriteLine(line);
+        Console.ResetColor();
+    }
+
+    private static string GetMenuText(string menuItem)
+    {
+        return $"| {menuItem,-13} |";
     }
 }

@@ -22,6 +22,8 @@ public class CrudProductService : ICrudService<Product>
         return context.Products
             .Include("Brand")
             .Include("Category")
+            .OrderBy(p => p.BrandId)
+                .ThenBy(p=> p.ProductId)
             .ToList();
     }
 

@@ -46,8 +46,6 @@ do
         case MenuOptions.ProductShow:
             uiProductService.Show();
             break;
-        default:
-            break;
     }
 
 } while (true);
