@@ -1,4 +1,4 @@
-﻿namespace Day39CaseStudy.Services.UserInterface;
+﻿namespace Day39CaseStudy.Services.Menu;
 
 public enum MenuOptions
 {
@@ -18,9 +18,9 @@ public enum MenuOptions
     CategoryShow = 12
 }
 
-public class MenuService
+public class MenuService : IMenuService
 {
-    private static readonly string[] MainMenuItems =
+    private readonly string[] _mainMenuItems =
     {
         "1) Brand",
         "2) Product",
@@ -28,7 +28,7 @@ public class MenuService
         "0) Exit"
     };
 
-    private static readonly string[] SubMenuItems =
+    private readonly string[] _subMenuItems =
     {
         "1) Add",
         "2) Update",
@@ -37,13 +37,13 @@ public class MenuService
         "0) Go Back"
     };
 
-    public static MenuOptions Show()
+    public MenuOptions Show()
     {
         MenuOptions menuOption;
 
         do
         {
-            var menuId = ShowMenuListing("=== Main Menu ===", MainMenuItems);
+            var menuId = ShowMenuListing("=== Main Menu ===", _mainMenuItems);
 
             switch (menuId)
             {
@@ -53,8 +53,8 @@ public class MenuService
                     continue;
             }
 
-            var selectedMainMenuText = GetMenuText(MainMenuItems[menuId - 1]);
-            var subMenuId = ShowMenuListing(selectedMainMenuText, SubMenuItems);
+            var selectedMainMenuText = GetMenuText(_mainMenuItems[menuId - 1]);
+            var subMenuId = ShowMenuListing(selectedMainMenuText, _subMenuItems);
 
             if (subMenuId == 0 || subMenuId == -1) 
                 continue;
@@ -79,9 +79,9 @@ public class MenuService
         Console.ResetColor();
     }
 
-    private static MenuOptions CalculateMenuOption(int menuId, int subMenuId)
+    private MenuOptions CalculateMenuOption(int menuId, int subMenuId)
     {
-        var masterMenuId = (menuId - 1) * MainMenuItems.Length + subMenuId;
+        var masterMenuId = (menuId - 1) * _mainMenuItems.Length + subMenuId;
 
         var selectedMenuOption = (MenuOptions)masterMenuId;
 
@@ -102,7 +102,7 @@ public class MenuService
         Console.ResetColor();
     }
 
-    private static int ShowMenuListing(string title, string[] menuItems)
+    private int ShowMenuListing(string title, string[] menuItems)
     {
         ShowTitle(title);
 

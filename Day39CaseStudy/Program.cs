@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Day39CaseStudy.Services.Menu;
 using Day39CaseStudy.Services.UserInterface;
 
 Console.WriteLine("Hello, World!");
@@ -10,13 +11,13 @@ Requirement:
  */
 
 
-var menuService = new MenuService();
+IMenuService menuService = new MenuService();
 var uiBrandService = new UserInterfaceCrudBrandService();
 var uiProductService = new UserInterfaceCrudProductService();
 
 do
 {
-    var menuOptions = MenuService.Show();
+    var menuOptions = menuService.Show();
 
     switch (menuOptions)
     {
