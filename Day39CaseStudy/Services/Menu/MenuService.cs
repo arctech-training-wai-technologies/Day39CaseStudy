@@ -99,10 +99,11 @@ public class MenuService : IMenuService
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(message);
+        Console.Beep();
         Console.ResetColor();
     }
 
-    private int ShowMenuListing(string title, string[] menuItems)
+    private static int ShowMenuListing(string title, string[] menuItems)
     {
         ShowTitle(title);
 
