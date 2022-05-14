@@ -34,3 +34,5 @@
    41, Haro Shift R3 - 2017, 6, Mountain Bikes, 2017, 1469.99
    ...
    *******************************************************************************************
+4. Make the Report in point 3 above look more professional.
+   - Add field width, so each column is shown properly, etc.
