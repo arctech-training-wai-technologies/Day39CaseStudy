@@ -19,12 +19,41 @@ public class CrudProductService : ICrudService<Product>
     {
         using var context = new SampleStoreDbContext();
 
-        return context.Products
+
+        var p1 = context.Products
             .Include("Brand")
             .Include("Category")
             .OrderBy(p => p.BrandId)
                 .ThenBy(p=> p.ProductId)
             .ToList();
+
+        /*
+        Select * from production.products
+        inner join production.brands on products.brand_id = brands.brand_id
+        inner join production.categories on products.category_id = categories.category_id
+        order by
+            products.brand_id, products.product_id
+        */
+
+        //var p2 = 
+        //    (from product in context.Products
+        //    join brand in context.Brands on product.BrandId equals brand.BrandId
+        //    join category in context.Categories on product.CategoryId equals category.CategoryId
+        //    orderby product.BrandId, product.ProductId
+        //    select product).ToList();
+
+        var getProducts = from p2 in context.Products
+            join b in context.Brands
+                on p2.BrandId equals b.BrandId
+            join cat in context.Categories
+                on p2.CategoryId equals cat.CategoryId
+            orderby
+                p2.BrandId, p2.ProductId
+            select p2;
+
+        var p = getProducts.ToList();
+
+        return p;
     }
 
     public void Update(Product product)

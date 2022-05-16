@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Day39CaseStudy.DataAccess.Models;
 
 [Table("brands", Schema = "production")]
+[Index("BrandName", IsUnique = true)]
 public class Brand
 {    
     [Key]
